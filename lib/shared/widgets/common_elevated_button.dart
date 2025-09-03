@@ -7,6 +7,8 @@ class CommonElevatedButton extends StatelessWidget {
     required this.onTouch,
     required this.textWidget,
     required this.color,
+    required this.height,
+    required this.width,
   });
 
   final void Function() onTouch;
@@ -15,11 +17,15 @@ class CommonElevatedButton extends StatelessWidget {
 
   final Color color;
 
+  final double width;
+  final double height;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onTouch,
       style: ElevatedButton.styleFrom(
+        fixedSize: Size(width, height),
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(16),

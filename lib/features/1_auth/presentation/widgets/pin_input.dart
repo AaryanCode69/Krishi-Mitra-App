@@ -6,9 +6,24 @@ class PinInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Pinput(
-      mainAxisAlignment: MainAxisAlignment.center,
-      hapticFeedbackType: HapticFeedbackType.lightImpact,
+    final defaultTheme = PinTheme(
+      width: 56,
+      height: 60,
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(240, 240, 240, 1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF6A994E)),
+      ),
+    );
+
+    return SizedBox(
+      width: MediaQuery.widthOf(context) * 0.9,
+      child: Pinput(
+        length: 6,
+        mainAxisAlignment: MainAxisAlignment.center,
+        hapticFeedbackType: HapticFeedbackType.lightImpact,
+        defaultPinTheme: defaultTheme,
+      ),
     );
   }
 }
