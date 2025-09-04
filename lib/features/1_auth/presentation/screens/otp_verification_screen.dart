@@ -23,8 +23,8 @@ class OtpVerificationScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: otpScreenBgColor,
-      body: SingleChildScrollView(
-        child: Center(
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -58,7 +58,7 @@ class OtpVerificationScreen extends StatelessWidget {
                   textColor: Colors.white,
                   fontSize: 20,
                 ),
-                color: cardTextColor,
+                color: otpTextColor,
               ),
             ],
           ),

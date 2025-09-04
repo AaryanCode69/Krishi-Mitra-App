@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_mitra/features/1_auth/presentation/screens/otp_verification_screen.dart';
+import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,6 +10,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: OtpVerificationScreen());
+    return const MaterialApp(home: CreateAccountScreen());
   }
 }

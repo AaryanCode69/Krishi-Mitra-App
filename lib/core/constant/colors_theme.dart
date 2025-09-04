@@ -6,3 +6,5 @@ const cardTextColor = Color(0xFF78d69a);
 const otpScreenBgColor = Color(0xFFf2e8cf);
 const otpTextColor = Color(0xFF2f4432);
 const otpSecondTextColor = Color(0xFF4e6d51);
+const formTextColor = Color(0xFF687e70);
+const formFillColor = Color(0xFF1a241e);
