@@ -23,34 +23,41 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filter = ProfanityFilter();
-    return TextFormField(
-      controller: textEditingController,
-      onChanged: onChange,
-      keyboardType: TextInputType.text,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please Enter a Username';
-        }
-        if (filter.hasProfanity(value)) {
-          return 'Please avoid using inappropriate language.';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        fillColor: Colors.grey[200],
-        label: CommonTextWidget(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonTextWidget(
           data: content,
-          textColor: formTextColor,
-          fontSize: 14,
+          textColor: const Color(0xFF272b2b),
+          fontSize: 20,
         ),
-        hint: CommonTextWidget(
-          data: hint,
-          textColor: formTextColor,
-          fontSize: 10,
+        const SizedBox(height: 2),
+        TextFormField(
+          controller: textEditingController,
+          onChanged: onChange,
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please Enter a Username';
+            }
+            if (filter.hasProfanity(value)) {
+              return 'Please avoid using inappropriate language.';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+            fillColor: Colors.grey.withOpacity(0.15),
+            filled: true,
+            hint: CommonTextWidget(
+              data: hint,
+              textColor: formTextColor,
+              fontSize: 15,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(13)),
+          ),
         ),
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(13)),
-      ),
+      ],
     );
   }
 }
