@@ -10,6 +10,7 @@ class MarketPricesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: darkBackground,
       appBar: AppBar(
         backgroundColor: darkBackground,
@@ -33,53 +34,60 @@ class MarketPricesScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenWidth = constraints.maxWidth;
+          
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(screenWidth * 0.06),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               // Select State Dropdown
               _buildDropdown(
+                context,
                 label: 'Select State',
                 onTap: () {
                   // TODO: Show state picker
                 },
               ),
               
-              const SizedBox(height: 16),
+              SizedBox(height: screenWidth * 0.04),
               
               // Select District Dropdown
               _buildDropdown(
+                context,
                 label: 'Select District',
                 onTap: () {
                   // TODO: Show district picker
                 },
               ),
               
-              const SizedBox(height: 16),
+              SizedBox(height: screenWidth * 0.04),
               
               // Select Crop Dropdown
               _buildDropdown(
+                context,
                 label: 'Select Crop',
                 onTap: () {
                   // TODO: Show crop picker
                 },
               ),
               
-              const SizedBox(height: 32),
+              SizedBox(height: screenWidth * 0.08),
               
               // Current Prices Header
               Text(
                 'Current Prices',
                 style: GoogleFonts.poppins(
                   color: onDarkTextColor,
-                  fontSize: 18,
+                  fontSize: (screenWidth * 0.045).clamp(16.0, 18.0),
                   fontWeight: FontWeight.w600,
                 ),
               ),
               
-              const SizedBox(height: 16),
+              SizedBox(height: screenWidth * 0.04),
               
               // Price Table Header
               Container(
@@ -140,10 +148,12 @@ class MarketPricesScreen extends StatelessWidget {
               _buildPriceRow('Cotton', '₹6,500', '₹7,500'),
               _buildPriceRow('Sugarcane', '₹350', '₹450', isLast: true),
               
-              const SizedBox(height: 24),
-            ],
-          ),
-        ),
+              SizedBox(height: screenWidth * 0.06),
+                ],
+              ),
+            ),
+          );
+        },
       ),
       bottomNavigationBar: HomeBottomNav(
         currentIndex: 2,
@@ -167,14 +177,20 @@ class MarketPricesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(
+    BuildContext context, {
     required String label,
     required VoidCallback onTap,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05,
+          vertical: screenWidth * 0.045,
+        ),
         decoration: BoxDecoration(
           color: darkCard,
           borderRadius: BorderRadius.circular(12),
@@ -190,14 +206,14 @@ class MarketPricesScreen extends StatelessWidget {
                 label,
                 style: GoogleFonts.poppins(
                   color: mutedTextColor,
-                  fontSize: 14,
+                  fontSize: (screenWidth * 0.035).clamp(12.0, 14.0),
                 ),
               ),
             ),
             Icon(
               Icons.keyboard_arrow_down,
               color: mutedTextColor,
-              size: 24,
+              size: (screenWidth * 0.06).clamp(20.0, 24.0),
             ),
           ],
         ),

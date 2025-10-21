@@ -29,6 +29,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     
     
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,

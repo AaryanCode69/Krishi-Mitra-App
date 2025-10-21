@@ -19,6 +19,7 @@ class CreateAccountScreen extends ConsumerWidget {
     final height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,

@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: homeBackground,
       appBar: _buildAppBar(),
       body: SingleChildScrollView(

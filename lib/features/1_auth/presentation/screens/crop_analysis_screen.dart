@@ -26,6 +26,7 @@ class _CropAnalysisScreenState extends State<CropAnalysisScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: darkBackground,
       appBar: AppBar(
         backgroundColor: darkBackground,
@@ -49,95 +50,109 @@ class _CropAnalysisScreenState extends State<CropAnalysisScreen> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Animated crop icon with circular progress
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Circular progress indicator
-                  SizedBox(
-                    width: 180,
-                    height: 180,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 6,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        primaryGreen,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenHeight = constraints.maxHeight;
+          final screenWidth = constraints.maxWidth;
+          final circleSize = (screenWidth * 0.45).clamp(150.0, 200.0);
+          final iconSize = circleSize * 0.65;
+          
+          return Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.06,
+                  vertical: screenHeight * 0.02,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Animated crop icon with circular progress
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Circular progress indicator
+                        SizedBox(
+                          width: circleSize,
+                          height: circleSize,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 6,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              primaryGreen,
+                            ),
+                            backgroundColor: primaryGreen.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        // Crop icon
+                        Container(
+                          width: iconSize,
+                          height: iconSize,
+                          decoration: BoxDecoration(
+                            color: primaryGreen.withValues(alpha: 0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.grass,
+                            color: primaryGreen,
+                            size: iconSize * 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    SizedBox(height: screenHeight * 0.06),
+                    
+                    // Main message
+                    Text(
+                      'Analyzing your crop, please wait...',
+                      style: GoogleFonts.poppins(
+                        color: onDarkTextColor,
+                        fontSize: (screenWidth * 0.055).clamp(18.0, 24.0),
+                        fontWeight: FontWeight.w600,
                       ),
-                      backgroundColor: primaryGreen.withValues(alpha: 0.2),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  // Crop icon
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: primaryGreen.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
+                    
+                    SizedBox(height: screenHeight * 0.02),
+                    
+                    // Subtitle
+                    Text(
+                      'Our AI is working its magic to give you the best insights.',
+                      style: GoogleFonts.poppins(
+                        color: mutedTextColor,
+                        fontSize: (screenWidth * 0.035).clamp(12.0, 16.0),
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: const Icon(
-                      Icons.grass,
-                      color: primaryGreen,
-                      size: 60,
+                    
+                    SizedBox(height: screenHeight * 0.06),
+                    
+                    // Progress bar
+                    Container(
+                      width: double.infinity,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: darkCard,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: 0.6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: primaryGreen,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 48),
-              
-              // Main message
-              Text(
-                'Analyzing your crop, please wait...',
-                style: GoogleFonts.poppins(
-                  color: onDarkTextColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              
-              const SizedBox(height: 16),
-              
-              // Subtitle
-              Text(
-                'Our AI is working its magic to give you the best insights.',
-                style: GoogleFonts.poppins(
-                  color: mutedTextColor,
-                  fontSize: 14,
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              
-              const SizedBox(height: 48),
-              
-              // Progress bar
-              Container(
-                width: double.infinity,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: darkCard,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: 0.6,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: primaryGreen,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
       bottomNavigationBar: HomeBottomNav(
         currentIndex: 1,

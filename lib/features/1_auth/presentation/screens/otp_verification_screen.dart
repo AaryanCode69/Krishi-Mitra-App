@@ -20,6 +20,7 @@ class OtpVerificationScreen extends ConsumerWidget {
     final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: otpScreenBgColor,

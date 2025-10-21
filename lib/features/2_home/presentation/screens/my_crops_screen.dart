@@ -29,6 +29,7 @@ class MyCropsScreen extends ConsumerWidget {
     final cropSubmissions = ref.watch(cropHistorySummaryProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: darkBackground,
       appBar: AppBar(
         backgroundColor: darkBackground,

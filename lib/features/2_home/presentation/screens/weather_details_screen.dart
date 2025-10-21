@@ -19,6 +19,7 @@ class WeatherDetailsScreen extends ConsumerWidget {
     );
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: darkBackground,
       appBar: AppBar(
         backgroundColor: darkBackground,
