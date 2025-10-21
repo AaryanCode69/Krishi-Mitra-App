@@ -4,8 +4,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/home_bottom_nav.dart';
 
-class CropAnalysisScreen extends StatelessWidget {
+class CropAnalysisScreen extends StatefulWidget {
   const CropAnalysisScreen({super.key});
+
+  @override
+  State<CropAnalysisScreen> createState() => _CropAnalysisScreenState();
+}
+
+class _CropAnalysisScreenState extends State<CropAnalysisScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Simulate analysis completion after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        context.push('/disease-detection');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +150,7 @@ class CropAnalysisScreen extends StatelessWidget {
               context.go('/scan');
               break;
             case 2:
-              context.push('/prices');
+              context.push('/market-prices');
               break;
             case 3:
               context.push('/crops');

@@ -93,7 +93,7 @@ class MandiPricesScreen extends ConsumerWidget {
               context.push('/scan');
               break;
             case 2:
-              context.go('/prices');
+              context.go('/market-prices');
               break;
             case 3:
               context.push('/crops');

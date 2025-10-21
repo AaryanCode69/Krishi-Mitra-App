@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                       secondaryCrop: dummyMandiPrices['secondaryCrop']!,
                       secondaryPrice: dummyMandiPrices['secondaryPrice']!,
                       onViewAllTap: () {
-                        context.push('/prices');
+                        context.push('/market-prices');
                       },
                     ),
                   ),
@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
               context.push('/scan');
               break;
             case 2:
-              context.push('/prices');
+              context.push('/market-prices');
               break;
             case 3:
               context.push('/crops');

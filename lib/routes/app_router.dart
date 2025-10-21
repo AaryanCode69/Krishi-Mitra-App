@@ -2,10 +2,12 @@ import 'package:go_router/go_router.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/crop_analysis_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/crop_diagnosis_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account_screen.dart';
+import 'package:krishi_mitra/features/1_auth/presentation/screens/disease_detection_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/onboarding.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/otp_verification_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/home_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/mandi_prices_screen.dart';
+import 'package:krishi_mitra/features/2_home/presentation/screens/market_prices_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/my_crops_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/weather_details_screen.dart';
 
@@ -38,8 +40,16 @@ final appRouter = GoRouter(
       builder: (context, state) => const CropAnalysisScreen(),
     ),
     GoRoute(
+      path: '/disease-detection',
+      builder: (context, state) => const DiseaseDetectionScreen(),
+    ),
+    GoRoute(
       path: '/prices',
       builder: (context, state) => const MandiPricesScreen(),
+    ),
+    GoRoute(
+      path: '/market-prices',
+      builder: (context, state) => const MarketPricesScreen(),
     ),
     GoRoute(
       path: '/crops',

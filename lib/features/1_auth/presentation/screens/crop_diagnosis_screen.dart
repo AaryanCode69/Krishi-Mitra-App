@@ -187,7 +187,7 @@ class CropDiagnosisScreen extends StatelessWidget {
               context.go('/scan');
               break;
             case 2:
-              context.push('/prices');
+              context.push('/market-prices');
               break;
             case 3:
               context.push('/crops');
