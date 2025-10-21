@@ -1,120 +1,110 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
+import 'package:krishi_mitra/features/1_auth/application/auth_providers.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/widgets/custom_drop_down_button.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:krishi_mitra/shared/widgets/common_elevated_button.dart';
-import 'package:krishi_mitra/shared/widgets/common_text_widget.dart';
 
-class CreateAccountScreen extends StatefulWidget {
+class CreateAccountScreen extends ConsumerWidget {
   const CreateAccountScreen({super.key});
 
   @override
-  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(createAccountProvider);
+    final notifier = ref.read(createAccountProvider.notifier);
 
-class _CreateAccountScreenState extends State<CreateAccountScreen> {
-  final nameController = TextEditingController();
-  final cityController = TextEditingController();
-  final districtController = TextEditingController();
-  final String? selected = null;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
 
-  final List<String> items = [
-    'Andhra Pradesh',
-    'Arunachal Pradesh',
-    'Assam',
-    'Bihar',
-    'Chhattisgarh',
-    'Goa',
-    'Gujarat',
-    'Haryana',
-    'Himachal Pradesh',
-    'Jharkhand',
-    'Karnataka',
-    'Kerala',
-    'Madhya Pradesh',
-    'Maharashtra',
-    'Manipur',
-    'Meghalaya',
-    'Mizoram',
-    'Nagaland',
-    'Odisha',
-    'Punjab',
-    'Rajasthan',
-    'Sikkim',
-    'Tamil Nadu',
-    'Telangana',
-    'Tripura',
-    'Uttar Pradesh',
-    'Uttarakhand',
-    'West Bengal',
-  ];
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    cityController.dispose();
-    districtController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.widthOf(context);
-    double height = MediaQuery.heightOf(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: scaffoldColor,
-        title: CommonTextWidget(
-          data: 'Create Account',
-          textColor: Colors.white,
-          fontSize: 20,
+        elevation: 0,
+        backgroundColor: darkBackground,
+        title: Text(
+          'Create Account',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      backgroundColor: scaffoldColor,
-      body: Center(
+      backgroundColor: darkBackground,
+      body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            width: width * 0.9,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+          child: Form(
+            key: notifier.formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomTextFormField(
-                  textEditingController: nameController,
-                  onChange: (value) {},
-                  content: 'Full name',
+                  textEditingController: notifier.nameController,
+                  onChange: notifier.onFieldChanged,
+                  content: 'Full Name',
                   hint: 'Enter your full name',
+                  labelColor: onDarkTextColor,
+                  validator: notifier.validateName,
+                  textInputAction: TextInputAction.next,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
                 CustomTextFormField(
-                  textEditingController: cityController,
-                  onChange: (value) {},
+                  textEditingController: notifier.cityController,
+                  onChange: notifier.onFieldChanged,
                   content: 'City',
                   hint: 'Enter your city',
+                  labelColor: onDarkTextColor,
+                  validator: notifier.validateCity,
+                  textInputAction: TextInputAction.next,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
                 CustomTextFormField(
-                  textEditingController: districtController,
-                  onChange: (value) {},
+                  textEditingController: notifier.districtController,
+                  onChange: notifier.onFieldChanged,
                   content: 'District',
                   hint: 'Enter your district',
+                  labelColor: onDarkTextColor,
+                  validator: notifier.validateDistrict,
+                  textInputAction: TextInputAction.next,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
                 CustomDropDownButton(
-                  items: items,
-                  onChanged: (value) {},
-                  value: selected,
+                  items: notifier.states,
+                  onChanged: notifier.onStateChanged,
+                  value: state.selectedState,
+                  validator: notifier.validateState,
+                  label: 'State',
+                  labelColor: onDarkTextColor,
                 ),
-                const SizedBox(height: 70),
-                CommonElevatedButton(
-                  onTouch: () {},
-                  textWidget: CommonTextWidget(
-                    data: 'Register',
-                    textColor: cardColor,
-                    fontSize: 20,
+                if (state.formError != null) ...[
+                  const SizedBox(height: 24),
+                  Text(
+                    state.formError!,
+                    style: GoogleFonts.poppins(
+                      color: Colors.redAccent,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  color: cardTextColor,
-                  height: height * 0.09,
+                ],
+                const SizedBox(height: 32),
+                CommonElevatedButton(
+                  onTouch: () => notifier.register(context),
+                  color: primaryGreen,
+                  height: height * 0.085,
                   width: width * 0.85,
+                  isLoading: state.status.isLoading,
+                  child: Text(
+                    'Register',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:krishi_mitra/features/2_home/presentation/widgets/home_bottom_nav.dart';
 
 class CropDiagnosisScreen extends StatelessWidget {
   const CropDiagnosisScreen({super.key});
@@ -103,7 +104,7 @@ class CropDiagnosisScreen extends StatelessWidget {
                   const Spacer(),
                   
                   // Open Camera Button
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
@@ -174,41 +175,11 @@ class CropDiagnosisScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF1A1A1A),
-          border: Border(
-            top: BorderSide(
-              color: Color(0xFF333333),
-              width: 0.5,
-            ),
-          ),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: const Color(0xFF1A1A1A),
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF4CAF50),
-          unselectedItemColor: Colors.white54,
-          currentIndex: 1, // Scan tab is selected
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera_alt),
-              label: 'Scan',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Prices',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
+        bottomNavigationBar: HomeBottomNav(
+        currentIndex: 1,
+        onTap: (index) {
+          // TODO: Handle navigation
+        },
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:krishi_mitra/routes/app_router.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -10,6 +11,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: CreateAccountScreen());
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: appRouter,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF00A86B),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+    );
   }
 }

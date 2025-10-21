@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_mitra/core/constant/colors_theme.dart';
-import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:krishi_mitra/shared/widgets/common_elevated_button.dart';
 import 'package:krishi_mitra/shared/widgets/common_text_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +26,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    
     
     return Scaffold(
       backgroundColor: Colors.white,
@@ -168,21 +167,15 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               
               // Continue Button
               CommonElevatedButton(
-                onTouch: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CreateAccountScreen(),
-                    ),
-                  );
-                },
-                textWidget: CommonTextWidget(
+                onTouch: () => GoRouter.of(context).push('/create-account'),
+                color: const Color(0xFF4A7C59),
+                height: 56,
+                width: width * 0.85,
+                child: const CommonTextWidget(
                   data: 'Continue',
                   textColor: Colors.white,
                   fontSize: 18,
                 ),
-                color: const Color(0xFF4A7C59),
-                height: 56,
-                width: width * 0.85,
               ),
               
               const SizedBox(height: 30),

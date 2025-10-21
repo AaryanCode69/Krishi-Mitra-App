@@ -33,6 +33,9 @@ migrate_working_dir/
 /build/
 /coverage/
 
+.kiro/
+COPILOT_CONTEXT.md
+
 # Symbolication related
 app.*.symbols
 
