@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:krishi_mitra/features/1_auth/presentation/screens/crop_analysis_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/crop_diagnosis_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/onboarding.dart';
@@ -31,6 +32,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/scan',
       builder: (context, state) => const CropDiagnosisScreen(),
+    ),
+    GoRoute(
+      path: '/crop-analysis',
+      builder: (context, state) => const CropAnalysisScreen(),
     ),
     GoRoute(
       path: '/prices',

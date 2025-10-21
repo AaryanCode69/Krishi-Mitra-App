@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/scan_crop_card.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               // Scan Crop Card
               ScanCropCard(
                 onTap: () {
-                  // Placeholder callback
+                  context.push('/scan');
                 },
               ),
               const SizedBox(height: 16),
@@ -37,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                       temperature: dummyWeather['temperature']!,
                       location: dummyWeather['location']!,
                       onForecastTap: () {
-                        // Placeholder callback
+                        context.push('/weather');
                       },
                     ),
                   ),
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                       secondaryCrop: dummyMandiPrices['secondaryCrop']!,
                       secondaryPrice: dummyMandiPrices['secondaryPrice']!,
                       onViewAllTap: () {
-                        // Placeholder callback
+                        context.push('/prices');
                       },
                     ),
                   ),
@@ -98,7 +99,20 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: HomeBottomNav(
         currentIndex: 0,
         onTap: (index) {
-          // Placeholder callback
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              context.push('/scan');
+              break;
+            case 2:
+              context.push('/prices');
+              break;
+            case 3:
+              context.push('/crops');
+              break;
+          }
         },
       ),
     );

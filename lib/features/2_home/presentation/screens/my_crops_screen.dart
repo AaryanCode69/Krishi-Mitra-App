@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
 import 'package:krishi_mitra/features/2_home/application/home_providers.dart';
 import 'package:krishi_mitra/features/2_home/domain/crop_submission.dart';
@@ -72,7 +73,20 @@ class MyCropsScreen extends ConsumerWidget {
       bottomNavigationBar: HomeBottomNav(
         currentIndex: 3,
         onTap: (index) {
-          // TODO: Handle navigation
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              context.push('/scan');
+              break;
+            case 2:
+              context.push('/prices');
+              break;
+            case 3:
+              context.go('/crops');
+              break;
+          }
         },
       ),
     );

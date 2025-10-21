@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/home_bottom_nav.dart';
 
@@ -109,7 +110,7 @@ class CropDiagnosisScreen extends StatelessWidget {
                     height: 56,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle camera functionality
+                        context.push('/crop-analysis');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4CAF50),
@@ -145,7 +146,7 @@ class CropDiagnosisScreen extends StatelessWidget {
                   // Upload from Gallery Button
                   TextButton(
                     onPressed: () {
-                      // Handle gallery functionality
+                      context.push('/crop-analysis');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -178,7 +179,20 @@ class CropDiagnosisScreen extends StatelessWidget {
         bottomNavigationBar: HomeBottomNav(
         currentIndex: 1,
         onTap: (index) {
-          // TODO: Handle navigation
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              context.go('/scan');
+              break;
+            case 2:
+              context.push('/prices');
+              break;
+            case 3:
+              context.push('/crops');
+              break;
+          }
         },
       ),
     );

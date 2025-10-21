@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
 import 'package:krishi_mitra/features/2_home/application/home_providers.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/home_bottom_nav.dart';
@@ -84,7 +85,20 @@ class MandiPricesScreen extends ConsumerWidget {
       bottomNavigationBar: HomeBottomNav(
         currentIndex: 2,
         onTap: (index) {
-          // TODO: Handle navigation
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              context.push('/scan');
+              break;
+            case 2:
+              context.go('/prices');
+              break;
+            case 3:
+              context.push('/crops');
+              break;
+          }
         },
       ),
     );
