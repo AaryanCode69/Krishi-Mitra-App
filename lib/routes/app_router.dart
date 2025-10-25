@@ -5,6 +5,8 @@ import 'package:krishi_mitra/features/1_auth/presentation/screens/create_account
 import 'package:krishi_mitra/features/1_auth/presentation/screens/disease_detection_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/onboarding.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/otp_verification_screen.dart';
+import 'package:krishi_mitra/features/1_auth/presentation/screens/phone_input_screen.dart';
+import 'package:krishi_mitra/features/1_auth/presentation/screens/splash_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/home_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/mandi_prices_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/market_prices_screen.dart';
@@ -17,6 +19,14 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/phone-input',
+      builder: (context, state) => const PhoneInputScreen(),
+    ),
+    GoRoute(
+      path: '/language-selection',
       builder: (context, state) => const LanguageSelectionScreen(),
     ),
     GoRoute(
