@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:krishi_mitra/core/constant/api_constants.dart';
 import 'package:krishi_mitra/features/1_auth/domain/exceptions/otp_verification_failure.dart';
 import 'package:krishi_mitra/features/1_auth/domain/exceptions/profile_update_failure.dart';
+import 'package:krishi_mitra/features/1_auth/domain/exceptions/refresh_token_expired_failure.dart';
 import 'package:krishi_mitra/features/1_auth/domain/login_response.dart';
 import 'package:krishi_mitra/features/1_auth/domain/user_profile_update_request.dart';
 import 'package:krishi_mitra/features/1_auth/domain/verify_otp_request.dart';
@@ -9,8 +10,11 @@ import 'package:krishi_mitra/features/1_auth/domain/verify_otp_request.dart';
 /// Repository for authentication-related operations
 class AuthRepository {
   final Dio _dio;
+  final Dio _refreshDio; // Separate Dio instance for refresh calls
 
-  AuthRepository({required Dio dio}) : _dio = dio;
+  AuthRepository({required Dio dio, required Dio refreshDio})
+      : _dio = dio,
+        _refreshDio = refreshDio;
 
   /// Verifies OTP and returns login response with tokens
   /// 
@@ -118,6 +122,69 @@ class AuthRepository {
     } catch (e) {
       // Handle any other errors
       throw ProfileUpdateFailure('Unexpected error: ${e.toString()}');
+    }
+  }
+
+  /// Refreshes the access token using the refresh token
+  /// 
+  /// Uses a separate Dio instance without Authorization header
+  /// Throws [RefreshTokenExpiredFailure] if refresh token is invalid/expired
+  Future<LoginResponse> refreshToken(String refreshToken) async {
+    try {
+      // Make POST request to refresh token endpoint
+      // Use _refreshDio to avoid adding Authorization header
+      final response = await _refreshDio.post(
+        '${ApiConstants.refreshTokenEndpoint}?refreshToken=$refreshToken',
+      );
+
+      // Check if response is successful (200 OK)
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        // Parse response data
+        final responseData = response.data as Map<String, dynamic>;
+        return LoginResponse.fromJson(responseData);
+      }
+
+      // If status code is not in 2xx range, throw exception
+      throw const RefreshTokenExpiredFailure('Failed to refresh token');
+    } on DioException catch (e) {
+      // Handle Dio-specific errors
+      if (e.response != null) {
+        // Server returned an error response
+        final statusCode = e.response!.statusCode;
+
+        // 401 or 403 means refresh token is invalid/expired
+        if (statusCode == 401 || statusCode == 403) {
+          throw const RefreshTokenExpiredFailure(
+              'Refresh token expired or invalid');
+        }
+
+        final errorMessage = e.response!.data?['message'] ??
+            e.response!.data?['error'] ??
+            'Failed to refresh token';
+
+        if (statusCode == 404) {
+          throw const RefreshTokenExpiredFailure('Service not found');
+        } else if (statusCode! >= 500) {
+          throw const RefreshTokenExpiredFailure(
+              'Server error. Please try again later');
+        }
+
+        throw RefreshTokenExpiredFailure(errorMessage);
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const RefreshTokenExpiredFailure(
+            'Connection timeout. Please check your internet');
+      } else if (e.type == DioExceptionType.connectionError) {
+        throw const RefreshTokenExpiredFailure('No internet connection');
+      }
+
+      throw const RefreshTokenExpiredFailure(
+          'An error occurred. Please try again');
+    } catch (e) {
+      // Handle any other errors
+      throw RefreshTokenExpiredFailure('Unexpected error: ${e.toString()}');
     }
   }
 }

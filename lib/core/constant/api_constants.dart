@@ -26,4 +26,9 @@ class ApiConstants {
   /// Usage: POST ${ApiConstants.baseUrl}${ApiConstants.completeProfileEndpoint}
   /// Requires Authorization header with Bearer token
   static const String completeProfileEndpoint = '/signUp/register';
+  
+  /// Refresh token endpoint
+  /// Usage: POST ${ApiConstants.baseUrl}${ApiConstants.refreshTokenEndpoint}?refreshToken={token}
+  /// Does NOT require Authorization header
+  static const String refreshTokenEndpoint = '$authEndpoint/refresh';
 }

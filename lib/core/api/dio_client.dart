@@ -1,16 +1,40 @@
 import 'package:dio/dio.dart';
+import 'package:krishi_mitra/core/api/refresh_token_interceptor.dart';
 import 'package:krishi_mitra/core/constant/api_constants.dart';
 import 'package:krishi_mitra/core/services/secure_storage_service.dart';
+import 'package:krishi_mitra/features/1_auth/data/auth_repository.dart';
 
 /// Configured Dio client with interceptors
 class DioClient {
   final SecureStorageService _secureStorageService;
+  final AuthRepository? _authRepository;
+  final Function()? _onTokenExpired;
   late final Dio _dio;
 
-  DioClient({required SecureStorageService secureStorageService})
-    : _secureStorageService = secureStorageService {
+  DioClient({
+    required SecureStorageService secureStorageService,
+    AuthRepository? authRepository,
+    Function()? onTokenExpired,
+  }) : _secureStorageService = secureStorageService,
+       _authRepository = authRepository,
+       _onTokenExpired = onTokenExpired {
+    // Main Dio instance
     _dio = Dio(_baseOptions);
+
+    // Add auth interceptor first
     _dio.interceptors.add(_authInterceptor());
+
+    // Add refresh token interceptor if repository and callback are provided
+    if (_authRepository != null && _onTokenExpired != null) {
+      _dio.interceptors.add(
+        RefreshTokenInterceptor(
+          secureStorageService: _secureStorageService,
+          authRepository: _authRepository,
+          dio: _dio,
+          onTokenExpired: _onTokenExpired,
+        ),
+      );
+    }
   }
 
   /// Base options for Dio
@@ -41,15 +65,7 @@ class DioClient {
         // Continue with the request
         handler.next(options);
       },
-      onError: (error, handler) async {
-        // Handle 401 Unauthorized errors (token expired)
-        if (error.response?.statusCode == 401) {
-          // TODO: Implement token refresh logic here
-          // For now, just pass the error
-        }
-
-        handler.next(error);
-      },
+      // onError is now handled by RefreshTokenInterceptor
     );
   }
 
