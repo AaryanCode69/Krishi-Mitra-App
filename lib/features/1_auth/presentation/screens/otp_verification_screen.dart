@@ -9,7 +9,9 @@ import 'package:krishi_mitra/shared/widgets/common_elevated_button.dart';
 import 'package:krishi_mitra/shared/widgets/common_text_widget.dart';
 
 class OtpVerificationScreen extends ConsumerWidget {
-  const OtpVerificationScreen({super.key});
+  final String? phoneNumber;
+  
+  const OtpVerificationScreen({super.key, this.phoneNumber});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

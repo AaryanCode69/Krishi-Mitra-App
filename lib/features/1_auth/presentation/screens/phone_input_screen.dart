@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
+import 'package:krishi_mitra/features/1_auth/application/auth_providers.dart';
 
-class PhoneInputScreen extends StatefulWidget {
+class PhoneInputScreen extends ConsumerStatefulWidget {
   const PhoneInputScreen({super.key});
 
   @override
-  State<PhoneInputScreen> createState() => _PhoneInputScreenState();
+  ConsumerState<PhoneInputScreen> createState() => _PhoneInputScreenState();
 }
 
-class _PhoneInputScreenState extends State<PhoneInputScreen> {
+class _PhoneInputScreenState extends ConsumerState<PhoneInputScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final FocusNode _phoneFocusNode = FocusNode();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -22,10 +25,73 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     super.dispose();
   }
 
-  void _handleGetOTP() {
-    print('Get OTP pressed with phone: ${_phoneController.text}');
-    // Navigate to OTP verification screen (placeholder for now)
-    context.push('/otp');
+  Future<void> _handleGetOTP() async {
+    final phoneNumber = _phoneController.text.trim();
+    
+    // Basic validation
+    if (phoneNumber.isEmpty) {
+      _showErrorSnackBar('Please enter your phone number');
+      return;
+    }
+    
+    if (phoneNumber.length != 10) {
+      _showErrorSnackBar('Please enter a valid 10-digit phone number');
+      return;
+    }
+    
+    // Set loading state
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      // Get AuthService from provider
+      final authService = ref.read(authServiceProvider);
+      
+      // Call sendOtp method
+      final success = await authService.sendOtp(phoneNumber);
+      
+      if (!mounted) return;
+      
+      if (success) {
+        // Get full phone number with country code
+        final fullPhoneNumber = authService.getFullPhoneNumber(phoneNumber);
+        
+        // Navigate to OTP verification screen with phone number
+        context.push('/otp', extra: fullPhoneNumber);
+      } else {
+        // Show error message
+        _showErrorSnackBar('Failed to send OTP. Please try again.');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showErrorSnackBar('An error occurred. Please try again.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+  
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.red.shade600,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   @override
@@ -188,24 +254,37 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: _handleGetOTP,
+                          onPressed: _isLoading ? null : _handleGetOTP,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: primaryGreen,
                             foregroundColor: Colors.white,
+                            disabledBackgroundColor: primaryGreen.withValues(alpha: 0.6),
+                            disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
                             elevation: 2,
                             shadowColor: primaryGreen.withValues(alpha: 0.3),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Text(
-                            'Get OTP',
-                            style: GoogleFonts.poppins(
-                              fontSize: (screenWidth * 0.04).clamp(16.0, 18.0),
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
+                          child: _isLoading
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Get OTP',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: (screenWidth * 0.04).clamp(16.0, 18.0),
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
                         ),
                       ),
                       

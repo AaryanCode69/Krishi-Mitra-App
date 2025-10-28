@@ -31,7 +31,10 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/otp',
-      builder: (context, state) => const OtpVerificationScreen(),
+      builder: (context, state) {
+        final phoneNumber = state.extra as String?;
+        return OtpVerificationScreen(phoneNumber: phoneNumber);
+      },
     ),
     GoRoute(
       path: '/create-account',
