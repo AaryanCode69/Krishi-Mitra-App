@@ -20,8 +20,7 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
       _OtpVerificationScreenState();
 }
 
-class _OtpVerificationScreenState
-    extends ConsumerState<OtpVerificationScreen> {
+class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   final TextEditingController _otpController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

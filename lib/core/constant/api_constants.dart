@@ -21,4 +21,9 @@ class ApiConstants {
   /// Verify OTP endpoint
   /// Usage: POST ${ApiConstants.baseUrl}${ApiConstants.verifyOtpEndpoint}
   static const String verifyOtpEndpoint = '$authEndpoint/verifyOtp';
+  
+  /// Complete user profile endpoint
+  /// Usage: POST ${ApiConstants.baseUrl}${ApiConstants.completeProfileEndpoint}
+  /// Requires Authorization header with Bearer token
+  static const String completeProfileEndpoint = '/signUp/register';
 }
