@@ -16,6 +16,7 @@ dependencies:
   google_fonts: ^6.3.1
   hooks_riverpod: ^2.6.1
   intl: ^0.20.2
+  jwt_decoder: ^2.0.1
   pinput: ^5.0.2
   profanity_filter: ^2.0.0
 

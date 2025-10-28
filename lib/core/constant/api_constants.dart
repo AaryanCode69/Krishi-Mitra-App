@@ -18,6 +18,7 @@ class ApiConstants {
   /// Usage: ${ApiConstants.baseUrl}${ApiConstants.getOtpEndpoint}/{phoneNumber}
   static const String getOtpEndpoint = '$authEndpoint/getOtp';
   
-  /// Verify OTP endpoint (for future use)
+  /// Verify OTP endpoint
+  /// Usage: POST ${ApiConstants.baseUrl}${ApiConstants.verifyOtpEndpoint}
   static const String verifyOtpEndpoint = '$authEndpoint/verifyOtp';
 }
