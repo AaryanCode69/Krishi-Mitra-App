@@ -234,9 +234,16 @@ class CropRepository {
 
       // Check if response is successful (200 OK)
       if (response.statusCode == 200) {
-        // Parse response data
-        final responseData = response.data as Map<String, dynamic>;
-        return CropSubmissionResponseDTO.fromJson(responseData);
+        // Parse response data - handle both Map and other types safely
+        if (response.data is Map<String, dynamic>) {
+          return CropSubmissionResponseDTO.fromJson(response.data as Map<String, dynamic>);
+        } else if (response.data is Map) {
+          // Convert Map to Map<String, dynamic>
+          final Map<String, dynamic> responseData = Map<String, dynamic>.from(response.data as Map);
+          return CropSubmissionResponseDTO.fromJson(responseData);
+        } else {
+          throw ResultFetchException('Invalid response format from server');
+        }
       }
 
       // If status code is not 200, throw exception
@@ -246,13 +253,25 @@ class CropRepository {
       if (e.response != null) {
         // Server returned an error response
         final statusCode = e.response!.statusCode;
-        final errorMessage = e.response!.data?['message'] ??
-            e.response!.data?['error'] ??
-            'Failed to fetch processing result';
+        
+        // Safely extract error message
+        String errorMessage = 'Failed to fetch processing result';
+        try {
+          if (e.response!.data is Map) {
+            final errorData = e.response!.data as Map;
+            errorMessage = errorData['message']?.toString() ??
+                          errorData['error']?.toString() ??
+                          errorMessage;
+          } else if (e.response!.data is String) {
+            errorMessage = e.response!.data as String;
+          }
+        } catch (_) {
+          // Keep default error message if parsing fails
+        }
 
         if (statusCode == 400) {
           throw ResultFetchException('Invalid submission ID: $errorMessage');
-        } else if (statusCode == 401) {
+        } else if (statusCode == 401 || statusCode == 403) {
           throw ResultFetchException('Unauthorized. Please login again');
         } else if (statusCode == 404) {
           throw ResultFetchException('Result not found. It may still be processing');
@@ -271,7 +290,7 @@ class CropRepository {
 
       throw ResultFetchException('An error occurred. Please try again');
     } catch (e) {
-      // Handle any other errors
+      // Handle any other errors including type casting errors
       throw ResultFetchException('Unexpected error: ${e.toString()}');
     }
   }

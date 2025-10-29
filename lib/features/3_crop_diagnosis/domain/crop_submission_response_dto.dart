@@ -16,13 +16,19 @@ class CropSubmissionResponseDTO {
   });
 
   factory CropSubmissionResponseDTO.fromJson(Map<String, dynamic> json) {
-    return CropSubmissionResponseDTO(
-      submissionId: json['submissionId'] as String,
-      diseaseName: json['diseaseName'] as String,
-      remedy: json['remedy'] as String,
-      status: json['status'] as String,
-      confidenceScore: (json['confidenceScore'] as num).toDouble(),
-      imageUrl: json['imageUrl'] as String,
-    );
+    try {
+      return CropSubmissionResponseDTO(
+        submissionId: json['submissionId']?.toString() ?? '',
+        diseaseName: json['diseaseName']?.toString() ?? 'Unknown',
+        remedy: json['remedy']?.toString() ?? 'No remedy available',
+        status: json['status']?.toString() ?? 'unknown',
+        confidenceScore: (json['confidenceScore'] is num) 
+            ? (json['confidenceScore'] as num).toDouble() 
+            : 0.0,
+        imageUrl: json['imageUrl']?.toString() ?? '',
+      );
+    } catch (e) {
+      throw FormatException('Failed to parse CropSubmissionResponseDTO: $e. JSON: $json');
+    }
   }
 }

@@ -49,10 +49,11 @@ class DioClient {
   InterceptorsWrapper _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Check if the request path is not an auth path
-        final isAuthPath = options.path.contains('/api/auth/');
+        // Paths that should NOT have Authorization header
+        final isPublicPath = options.path.contains('/api/auth/getOtp') ||
+                             options.path.contains('/api/auth/verifyOtp');
 
-        if (!isAuthPath) {
+        if (!isPublicPath) {
           // Attempt to read access token
           final accessToken = await _secureStorageService.getAccessToken();
 
