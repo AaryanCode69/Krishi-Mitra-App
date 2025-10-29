@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
               // Scan Crop Card
               ScanCropCard(
                 onTap: () {
-                  context.push('/scan');
+                  context.push('/crop-upload');
                 },
               ),
               const SizedBox(height: 16),

@@ -6,14 +6,16 @@ void main() {
   runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      routerConfig: router,
       theme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(

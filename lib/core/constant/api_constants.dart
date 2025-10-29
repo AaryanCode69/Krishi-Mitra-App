@@ -9,7 +9,7 @@ class ApiConstants {
 
   /// Base URL for the API
   /// Change this for different environments (development, staging, production)
-  static const String baseUrl = 'https://cd24e4ea9e75.ngrok-free.app';
+  static const String baseUrl = 'https://7b2859acc4cb.ngrok-free.app';
 
   /// API Endpoints
   static const String authEndpoint = '/api/auth';

@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:krishi_mitra/core/constant/colors_theme.dart';
+import 'package:krishi_mitra/features/1_auth/application/auth_providers.dart';
+import 'package:krishi_mitra/features/1_auth/application/auth_state.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToPhoneInput();
+    _checkAuthAndNavigate();
   }
 
-  Future<void> _navigateToPhoneInput() async {
-    await Future.delayed(const Duration(seconds: 3));
-    if (mounted) {
+  Future<void> _checkAuthAndNavigate() async {
+    // Wait for splash animation
+    await Future.delayed(const Duration(seconds: 2));
+    
+    if (!mounted) return;
+    
+    // Check authentication state
+    final authState = ref.read(authProvider);
+    
+    // Navigate based on auth state
+    if (authState.status == AuthStatus.success) {
+      // User is authenticated, go to home
+      context.go('/home');
+    } else {
+      // User is not authenticated, go to phone input
       context.go('/phone-input');
     }
   }

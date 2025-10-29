@@ -92,14 +92,19 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     // This must be called within the build method
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next.status == AuthStatus.success) {
-        // Navigate based on profileComplete value
-        if (next.profileComplete == true) {
-          // Profile is complete, go to home
-          context.go('/home');
-        } else {
-          // Profile is not complete, go to create account
-          context.go('/create-account');
-        }
+        // Small delay to ensure state is fully updated before navigation
+        Future.microtask(() {
+          if (!mounted) return;
+          
+          // Navigate based on profileComplete value
+          if (next.profileComplete == true) {
+            // Profile is complete, go to home
+            context.go('/home');
+          } else {
+            // Profile is not complete, go to create account
+            context.go('/create-account');
+          }
+        });
       }
     });
 
