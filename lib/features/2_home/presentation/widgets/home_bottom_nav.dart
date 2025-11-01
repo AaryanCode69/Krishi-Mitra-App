@@ -51,6 +51,11 @@ class HomeBottomNav extends StatelessWidget {
                 label: 'Crops',
                 index: 3,
               ),
+              _buildNavItem(
+                icon: Icons.history,
+                label: 'History',
+                index: 4,
+              ),
             ],
           ),
         ),

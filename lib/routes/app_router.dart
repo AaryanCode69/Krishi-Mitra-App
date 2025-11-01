@@ -16,6 +16,8 @@ import 'package:krishi_mitra/features/2_home/presentation/screens/weather_detail
 import 'package:krishi_mitra/features/3_crop_diagnosis/presentation/screens/crop_upload_screen.dart';
 import 'package:krishi_mitra/features/3_crop_diagnosis/presentation/screens/processing_screen.dart';
 import 'package:krishi_mitra/features/3_crop_diagnosis/presentation/screens/result_screen.dart';
+import 'package:krishi_mitra/features/4_crop_history/presentation/screens/crop_history_screen.dart';
+import 'package:krishi_mitra/features/4_crop_history/presentation/screens/crop_history_detail_screen.dart';
 
 // Provider for GoRouter with authentication awareness
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -41,6 +43,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         '/crop-upload',
         '/crop-processing',
         '/crop-result',
+        '/history',
       ];
       
       // Public routes that authenticated users shouldn't access
@@ -50,7 +53,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         '/language-selection',
       ];
       
-      final isProtectedRoute = protectedRoutes.contains(currentPath);
+      final isProtectedRoute = protectedRoutes.contains(currentPath) || 
+                               currentPath.startsWith('/history/');
       final isPublicRoute = publicRoutes.contains(currentPath);
       
       // If on splash screen and authenticated, redirect to home
@@ -138,6 +142,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return ResultScreen(result: result as dynamic);
       },
     ),
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const CropHistoryScreen(),
+    ),
+    GoRoute(
+      path: '/history/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return CropHistoryDetailScreen(submissionId: id);
+      },
+    ),
   ],
   );
 });
@@ -211,6 +226,17 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final result = state.extra;
         return ResultScreen(result: result as dynamic);
+      },
+    ),
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const CropHistoryScreen(),
+    ),
+    GoRoute(
+      path: '/history/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return CropHistoryDetailScreen(submissionId: id);
       },
     ),
   ],

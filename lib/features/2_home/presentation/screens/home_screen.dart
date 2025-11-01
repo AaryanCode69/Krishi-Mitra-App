@@ -113,6 +113,9 @@ class HomeScreen extends StatelessWidget {
             case 3:
               context.push('/crops');
               break;
+            case 4:
+              context.push('/history');
+              break;
           }
         },
       ),

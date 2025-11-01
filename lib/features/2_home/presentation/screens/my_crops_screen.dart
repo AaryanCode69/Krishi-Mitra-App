@@ -87,6 +87,9 @@ class MyCropsScreen extends ConsumerWidget {
             case 3:
               context.go('/crops');
               break;
+            case 4:
+              context.push('/history');
+              break;
           }
         },
       ),
