@@ -99,7 +99,7 @@ class WeatherDetailsScreen extends ConsumerWidget {
               context.push('/market-prices');
               break;
             case 3:
-              context.push('/crops');
+              context.push('/history');
               break;
           }
         },

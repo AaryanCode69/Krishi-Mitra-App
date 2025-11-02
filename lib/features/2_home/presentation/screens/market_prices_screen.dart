@@ -169,9 +169,6 @@ class MarketPricesScreen extends StatelessWidget {
               context.go('/market-prices');
               break;
             case 3:
-              context.push('/crops');
-              break;
-            case 4:
               context.push('/history');
               break;
           }

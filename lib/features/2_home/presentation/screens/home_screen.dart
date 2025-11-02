@@ -5,7 +5,6 @@ import 'package:krishi_mitra/core/constant/colors_theme.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/scan_crop_card.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/weather_card.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/mandi_summary_card.dart';
-import 'package:krishi_mitra/features/2_home/presentation/widgets/my_crops_list_item.dart';
 import 'package:krishi_mitra/features/2_home/presentation/widgets/home_bottom_nav.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -57,42 +56,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              
-              // My Crops Section
-              Text(
-                'My Crops',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // Crop List Items
-              MyCropListItem(
-                cropName: dummyCrops[0]['name'] as String,
-                status: dummyCrops[0]['status'] as String,
-                statusColor: dummyCrops[0]['statusColor'] as Color,
-                timestamp: dummyCrops[0]['timestamp'] as String,
-                badgeText: dummyCrops[0]['badgeText'] as String,
-                onTap: () {
-                  // Placeholder callback
-                },
-              ),
-              const SizedBox(height: 12),
-              MyCropListItem(
-                cropName: dummyCrops[1]['name'] as String,
-                status: dummyCrops[1]['status'] as String,
-                statusColor: dummyCrops[1]['statusColor'] as Color,
-                timestamp: dummyCrops[1]['timestamp'] as String,
-                badgeText: dummyCrops[1]['badgeText'] as String,
-                onTap: () {
-                  // Placeholder callback
-                },
-              ),
-              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -108,12 +71,9 @@ class HomeScreen extends StatelessWidget {
               context.push('/scan');
               break;
             case 2:
-              context.push('/market-prices');
+              context.push('/prices');
               break;
             case 3:
-              context.push('/crops');
-              break;
-            case 4:
               context.push('/history');
               break;
           }
@@ -166,7 +126,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// Dummy data constants for weather, mandi prices, and crops
+// Dummy data constants for weather and mandi prices
 const dummyWeather = {
   'temperature': '28°C',
   'location': 'Vellore, TN',
@@ -178,20 +138,3 @@ const dummyMandiPrices = {
   'secondaryCrop': 'Rice',
   'secondaryPrice': '₹2,200',
 };
-
-const dummyCrops = [
-  {
-    'name': 'Groundnut',
-    'status': 'Healthy',
-    'statusColor': Color(0xFF2ECC71),
-    'timestamp': '2 days ago',
-    'badgeText': 'View Details',
-  },
-  {
-    'name': 'Tomato',
-    'status': 'Early Blight',
-    'statusColor': Color(0xFFF6C945),
-    'timestamp': '5 days ago',
-    'badgeText': 'Needs Attention',
-  },
-];

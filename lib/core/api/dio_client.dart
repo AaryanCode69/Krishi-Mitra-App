@@ -49,9 +49,18 @@ class DioClient {
   InterceptorsWrapper _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
+        // Debug logging
+        print(
+          '🔍 [Auth Interceptor] Request: ${options.method} ${options.path}',
+        );
+
         // Paths that should NOT have Authorization header
-        final isPublicPath = options.path.contains('/api/auth/getOtp') ||
-                             options.path.contains('/api/auth/verifyOtp');
+        final isPublicPath =
+            options.path.contains('/api/auth/getOtp') ||
+            options.path.contains('/api/auth/verifyOtp') ||
+            options.path.contains('/api/auth/refresh');
+
+        print('🔍 [Auth Interceptor] Is public path: $isPublicPath');
 
         if (!isPublicPath) {
           // Attempt to read access token
@@ -60,8 +69,16 @@ class DioClient {
           if (accessToken != null && accessToken.isNotEmpty) {
             // Add Authorization header
             options.headers['Authorization'] = 'Bearer $accessToken';
+            print('✅ [Auth Interceptor] Authorization header added');
+            print(
+              '🔑 [Auth Interceptor] Token preview: ${accessToken.substring(0, 20)}...',
+            );
+          } else {
+            print('❌ [Auth Interceptor] No access token found in storage');
           }
         }
+
+        print('📤 [Auth Interceptor] Request headers: ${options.headers}');
 
         // Continue with the request
         handler.next(options);

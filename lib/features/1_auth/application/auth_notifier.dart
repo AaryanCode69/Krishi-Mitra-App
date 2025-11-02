@@ -42,14 +42,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       // Decode access token to extract profileComplete claim
+      print('🔐 [Auth Notifier] Decoding JWT token...');
       final decodedToken = JwtDecoder.decode(loginResponse.accessToken);
+      print('🔐 [Auth Notifier] Decoded token: $decodedToken');
+      
       final profileComplete = decodedToken['profileComplete'] as bool? ?? false;
+      print('🔐 [Auth Notifier] Profile complete value: $profileComplete');
+      print('🔐 [Auth Notifier] User ID: ${loginResponse.userId}');
 
       // Set state to success with profileComplete value
       state = AuthState.success(
         profileCompleteValue: profileComplete,
         userId: loginResponse.userId,
       );
+      
+      print('✅ [Auth Notifier] State set to success with profileComplete: $profileComplete');
     } on OtpVerificationFailure catch (e) {
       // Handle OTP verification failure
       state = AuthState.error(e.message);

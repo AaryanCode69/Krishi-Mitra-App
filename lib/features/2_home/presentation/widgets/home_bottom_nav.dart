@@ -42,19 +42,14 @@ class HomeBottomNav extends StatelessWidget {
                 index: 1,
               ),
               _buildNavItem(
-                icon: Icons.store,
+                icon: Icons.currency_rupee,
                 label: 'Prices',
                 index: 2,
               ),
               _buildNavItem(
-                icon: Icons.agriculture,
-                label: 'Crops',
-                index: 3,
-              ),
-              _buildNavItem(
                 icon: Icons.history,
                 label: 'History',
-                index: 4,
+                index: 3,
               ),
             ],
           ),

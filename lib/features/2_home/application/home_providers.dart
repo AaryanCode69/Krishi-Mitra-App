@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/crop_submission.dart';
-
 class WeatherSummary {
   const WeatherSummary({
     required this.temperature,
@@ -40,21 +38,6 @@ final mandiPriceSummaryProvider = Provider<MandiPriceSummary>((ref) {
     secondaryCommodity: 'Rice',
     secondaryPrice: '₹2,200',
   );
-});
-
-final cropHistorySummaryProvider = Provider<List<CropSubmission>>((ref) {
-  return [
-    CropSubmission(
-      cropName: 'Groundnut',
-      status: CropHealthStatus.healthy,
-      submittedAt: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    CropSubmission(
-      cropName: 'Tomato',
-      status: CropHealthStatus.needsAttention,
-      submittedAt: DateTime.now().subtract(const Duration(days: 5)),
-    ),
-  ];
 });
 
 final homeNavIndexProvider = StateProvider<int>((ref) => 0);

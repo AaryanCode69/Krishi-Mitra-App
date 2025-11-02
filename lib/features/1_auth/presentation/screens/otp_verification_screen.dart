@@ -91,20 +91,22 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     // Listen to auth state changes for navigation
     // This must be called within the build method
     ref.listen<AuthState>(authProvider, (previous, next) {
+      print('🔔 [OTP Screen] Auth state changed: ${next.status}');
+      print('🔔 [OTP Screen] Profile complete: ${next.profileComplete}');
+      
       if (next.status == AuthStatus.success) {
-        // Small delay to ensure state is fully updated before navigation
-        Future.microtask(() {
-          if (!mounted) return;
-          
-          // Navigate based on profileComplete value
-          if (next.profileComplete == true) {
-            // Profile is complete, go to home
-            context.go('/home');
-          } else {
-            // Profile is not complete, go to create account
-            context.go('/create-account');
-          }
-        });
+        // Navigate based on profileComplete value
+        if (next.profileComplete == true) {
+          print('✅ [OTP Screen] Navigating to /home');
+          // Profile is complete, go to home
+          context.go('/home');
+        } else {
+          print('✅ [OTP Screen] Navigating to /create-account');
+          // Profile is not complete, go to create account
+          context.go('/create-account');
+        }
+      } else if (next.status == AuthStatus.error) {
+        print('❌ [OTP Screen] Error: ${next.errorMessage}');
       }
     });
 

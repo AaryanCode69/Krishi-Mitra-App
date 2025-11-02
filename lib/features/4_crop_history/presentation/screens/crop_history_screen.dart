@@ -49,7 +49,7 @@ class CropHistoryScreen extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: HomeBottomNav(
-        currentIndex: 4,
+        currentIndex: 3,
         onTap: (index) {
           switch (index) {
             case 0:
@@ -59,12 +59,9 @@ class CropHistoryScreen extends ConsumerWidget {
               context.push('/scan');
               break;
             case 2:
-              context.push('/market-prices');
+              context.push('/prices');
               break;
             case 3:
-              context.push('/crops');
-              break;
-            case 4:
               // Already on history screen
               break;
           }

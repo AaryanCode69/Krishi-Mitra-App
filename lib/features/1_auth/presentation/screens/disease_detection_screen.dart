@@ -199,7 +199,7 @@ class DiseaseDetectionScreen extends StatelessWidget {
               context.push('/market-prices');
               break;
             case 3:
-              context.push('/crops');
+              context.push('/history');
               break;
           }
         },

@@ -9,9 +9,8 @@ import 'package:krishi_mitra/features/1_auth/presentation/screens/otp_verificati
 import 'package:krishi_mitra/features/1_auth/presentation/screens/phone_input_screen.dart';
 import 'package:krishi_mitra/features/1_auth/presentation/screens/splash_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/home_screen.dart';
-import 'package:krishi_mitra/features/2_home/presentation/screens/mandi_prices_screen.dart';
+import 'package:krishi_mitra/features/5_mandi_prices/presentation/screens/mandi_prices_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/market_prices_screen.dart';
-import 'package:krishi_mitra/features/2_home/presentation/screens/my_crops_screen.dart';
 import 'package:krishi_mitra/features/2_home/presentation/screens/weather_details_screen.dart';
 import 'package:krishi_mitra/features/3_crop_diagnosis/presentation/screens/crop_upload_screen.dart';
 import 'package:krishi_mitra/features/3_crop_diagnosis/presentation/screens/processing_screen.dart';
@@ -38,7 +37,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         '/disease-detection',
         '/prices',
         '/market-prices',
-        '/crops',
         '/weather',
         '/crop-upload',
         '/crop-processing',
@@ -53,6 +51,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         '/language-selection',
       ];
       
+      // Special route that needs profile completion check
+      final isCreateAccountRoute = currentPath == '/create-account';
+      
       final isProtectedRoute = protectedRoutes.contains(currentPath) || 
                                currentPath.startsWith('/history/');
       final isPublicRoute = publicRoutes.contains(currentPath);
@@ -65,6 +66,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // If authenticated and trying to access public routes, redirect to home
       if (isAuthenticated && isPublicRoute) {
         return '/home';
+      }
+      
+      // Special handling for create-account route
+      // Allow access if profile is not complete, redirect to home if complete
+      if (isCreateAccountRoute && isAuthenticated) {
+        if (authState.profileComplete == true) {
+          return '/home';
+        }
+        // Allow access to create-account if profile is not complete
+        return null;
       }
       
       // If not authenticated and trying to access protected route, redirect to phone input
@@ -113,15 +124,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ),
     GoRoute(
       path: '/prices',
+      name: 'prices',
       builder: (context, state) => const MandiPricesScreen(),
     ),
     GoRoute(
       path: '/market-prices',
       builder: (context, state) => const MarketPricesScreen(),
-    ),
-    GoRoute(
-      path: '/crops',
-      builder: (context, state) => const MyCropsScreen(),
     ),
     GoRoute(
       path: '/weather',
@@ -199,15 +207,12 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/prices',
+      name: 'prices',
       builder: (context, state) => const MandiPricesScreen(),
     ),
     GoRoute(
       path: '/market-prices',
       builder: (context, state) => const MarketPricesScreen(),
-    ),
-    GoRoute(
-      path: '/crops',
-      builder: (context, state) => const MyCropsScreen(),
     ),
     GoRoute(
       path: '/weather',
